@@ -72,7 +72,13 @@ public class FruitsInCartFragment extends Fragment implements IFruitsInCartListe
     }
 
     @Override
-    public void onItemClick(Fruit fruit) {
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void updateFruit(Fruit fruit) {
         int cartCount = fruit.getInCartCount();
         if ((cartCount - 1) == 0) {
             fruit.setInCart(false);
@@ -80,12 +86,5 @@ public class FruitsInCartFragment extends Fragment implements IFruitsInCartListe
         fruit.setInCartCount(fruit.getInCartCount() - 1);
         fruit.setInStockCount(fruit.getInStockCount() + 1);
         fruitViewModel.update(fruit);
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 }

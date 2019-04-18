@@ -9,25 +9,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.fruitsstockapp.R;
-import com.example.fruitsstockapp.interfaces.IFruitsInCartListener;
+import com.example.fruitsstockapp.interfaces.IFruitsInStockListener;
 import com.example.fruitsstockapp.model.Fruit;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FruitsInStockAdapter extends RecyclerView.Adapter<FruitsInStockAdapter.FruitHolder> {
 
     private Context context;
     private List<Fruit> fruitList;
-    private IFruitsInCartListener iFruitsInCartListener;
+    private IFruitsInStockListener iFruitsInStockListener;
 
-    public FruitsInStockAdapter(Context context, List<Fruit> fruitList, IFruitsInCartListener iFruitsInCartListener) {
+    public FruitsInStockAdapter(Context context, List<Fruit> fruitList, IFruitsInStockListener iFruitsInStockListener) {
         this.context = context;
         this.fruitList = fruitList;
-        this.iFruitsInCartListener = iFruitsInCartListener;
+        this.iFruitsInStockListener = iFruitsInStockListener;
     }
 
     @NonNull
@@ -45,7 +44,19 @@ public class FruitsInStockAdapter extends RecyclerView.Adapter<FruitsInStockAdap
         holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iFruitsInCartListener.onItemClick(fruit);
+                iFruitsInStockListener.addToCart(fruit);
+            }
+        });
+        holder.ibRemoveFromStock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iFruitsInStockListener.deleteFruit(fruit);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iFruitsInStockListener.updateFruit(fruit);
             }
         });
 
@@ -66,12 +77,14 @@ public class FruitsInStockAdapter extends RecyclerView.Adapter<FruitsInStockAdap
         private TextView tvFruitName;
         private TextView tvFruitStockCount;
         private Button btnAddToCart;
+        private ImageButton ibRemoveFromStock;
 
         public FruitHolder(@NonNull View itemView) {
             super(itemView);
             tvFruitName = itemView.findViewById(R.id.tvFruitName);
             tvFruitStockCount = itemView.findViewById(R.id.tvFruitStockCount);
             btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
+            ibRemoveFromStock = itemView.findViewById(R.id.ibDeleteFromStock);
         }
     }
 }

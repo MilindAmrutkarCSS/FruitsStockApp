@@ -43,7 +43,7 @@ public class FruitsInCartAdapter extends RecyclerView.Adapter<FruitsInCartAdapte
         holder.ibDeleteFromCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iFruitsInCartListener.onItemClick(fruit);
+                iFruitsInCartListener.updateFruit(fruit);
             }
         });
     }

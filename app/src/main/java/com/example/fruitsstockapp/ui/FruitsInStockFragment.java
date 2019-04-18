@@ -1,16 +1,21 @@
 package com.example.fruitsstockapp.ui;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fruitsstockapp.R;
 import com.example.fruitsstockapp.adapters.FruitsInStockAdapter;
 import com.example.fruitsstockapp.interfaces.IFruitsInCartListener;
+import com.example.fruitsstockapp.interfaces.IFruitsInStockListener;
 import com.example.fruitsstockapp.model.Fruit;
 import com.example.fruitsstockapp.viewmodel.FruitViewModel;
 
@@ -31,7 +36,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FruitsInStockFragment extends Fragment implements IFruitsInCartListener {
+public class FruitsInStockFragment extends Fragment implements IFruitsInStockListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -71,7 +76,7 @@ public class FruitsInStockFragment extends Fragment implements IFruitsInCartList
     }
 
     @Override
-    public void onItemClick(Fruit fruit) {
+    public void addToCart(Fruit fruit) {
         int stockCount = fruit.getInStockCount();
         if (stockCount != 0) {
             fruit.setInStockCount(stockCount - 1);
@@ -79,6 +84,57 @@ public class FruitsInStockFragment extends Fragment implements IFruitsInCartList
             fruit.setInCart(true);
         }
         fruitViewModel.update(fruit);
+    }
+
+    @Override
+    public void deleteFruit(Fruit fruit) {
+        fruitViewModel.delete(fruit);
+    }
+
+    @Override
+    public void updateFruit(Fruit fruit) {
+
+        Fruit fruit1 = fruit;
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_add_fruit);
+        dialog.setTitle("Edit");
+
+        EditText etFruitName = dialog.findViewById(R.id.etFruitName);
+        EditText etFruitCount = dialog.findViewById(R.id.etFruitCount);
+        Button btnAddFruit = dialog.findViewById(R.id.btnAddToStock);
+        btnAddFruit.setText("Save");
+
+        etFruitName.setText(fruit1.getFruitName());
+        etFruitCount.setText(String.valueOf(fruit1.getInStockCount()));
+
+        btnAddFruit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!TextUtils.isEmpty(etFruitName.getText().toString())
+                        && (!TextUtils.isEmpty(etFruitCount.getText().toString()))) {
+
+                    String fruitName = etFruitName.getText().toString();
+                    int fruitCount = Integer.valueOf(etFruitCount.getText().toString());
+
+                    if (fruitCount <= 50) {
+
+                        fruit1.setFruitName(fruitName);
+                        fruit1.setInStockCount(fruitCount);
+                        fruitViewModel.update(fruit1);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(context, "Fruits quantity cannot be greater than 50", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, "Fruit Name & Count cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        dialog.show();
+
+
     }
 
     @Override

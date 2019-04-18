@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginLeft="8dp">
+    android:layout_marginRight="8dp">
 
     <RelativeLayout
-        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tvFruitName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/fruit_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <ImageButton
+            android:id="@+id/ibDeleteFromStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_delete_forever" />
 
         <TextView
             android:id="@+id/tvFruitStockCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:hint="@string/fruit_count"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_alignParentEnd="true"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <Button
             android:id="@+id/btnAddToCart"
@@ -33,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvFruitStockCount"
             android:layout_alignParentEnd="true"
-            android:text="Add to cart"/>
+            android:text="Add to cart" />
 
     </RelativeLayout>
 
